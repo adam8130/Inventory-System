@@ -1,247 +1,546 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="./quaggaJS.js" type="text/javascript"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/vConsole/3.3.0/vconsole.min.js"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <title>Babyview查詢系統</title>
 </head>
 
 <style>
-        * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    #title {
+        width: 100%;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 32px;
+        padding: 40px 0;
+    }
+
+    .input-box {
+        width: 90%;
+        height: 40px;
+        font-size: 20px;
+        display: block;
+        margin: auto;
+        position: relative;
+    }
+
+    .input-box input {
+        width: 100%;
+        height: 40px;
+        font-size: 20px;
+        padding: 5px;
+    }
+
+    .input-box .closeBTN {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 11%;
+        right: 14%;
+        border-radius: 50px;
+        background: rgb(255, 255, 255);
+        color: rgba(40, 40, 40, 0.6);
+        font-weight: 900;
+        font-size: 14px;
+        border: 1px solid;
+    }
+
+    .input-box #goBTN {
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        right: 3%;
+        top: 11%;
+        background: rgb(255, 255, 255);
+        border: 1px solid black;
+        border-radius: 5px;
+        color: rgb(0, 116, 211);
+        font-weight: 600;
+        flex: 1
+    }
+
+    #output {
+        width: 90%;
+        padding: 10px;
+        font-size: 28px;
+        margin: auto;
+    }
+
+    #output .location-bar {
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        display: none;
+        padding: 10px;
+        margin: 10px auto;
+    }
+
+    #output .img-bar {
+        width: 250px;
+        height: 250px;
+        margin: auto;
+        display: none;
+    }
+
+    #output .img-bar img {
+        width: 100%;
+        height: 100%;
+        margin: auto;
+    }
+
+    #output .swiper-bar {
+        overflow-x: scroll;
+        display: none;
+    }
+
+    #output .inventory-bar {
+        flex: 0 0 90%;
+        width: 100%;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        margin: 20px;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    #output .inventory-bar .wrap {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #output .inventory-bar>div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid;
+        padding: 5px;
+        font-size: 22px;
+    }
+
+    #output .inventory-bar .model {
+        border: none;
+        font-size: 40px;
+        letter-spacing: 1px;
+        display: flex;
+        padding: 5px;
+    }
+
+    #output .inventory-bar .name {
+        border: none;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        font-size: 22px;
+        padding: 5px;
+        text-transform: uppercase;
+    }
+
+    #output .inventory-bar .price {
+        border: none;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        font-size: 22px;
+        margin-bottom: 20px;
+        padding: 5px;
+    }
+
+    .video-bar {
+        width: 96%;
+        height: 96%;
+        display: none;
+        margin: auto;
+        position: relative;
+    }
+
+    .video-bar #cam {
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+    }
+
+    .video-bar .scan-rng {
+        width: 80%;
+        height: 80px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 2px solid red;
+    }
+
+    img[alt='Info icon'] {
+        display: none;
+    }
+
+    .group {
+        width: 90%;
+        display: flex;
+        margin: 10px auto;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .group .selection {
+        width: 50%;
+        margin: auto;
+        display: flex;
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid rgba(200, 200, 200);
+        justify-content: space-between;
+        align-items: center;
+        flex: 0.7
+    }
+
+    .group #camBTN {
+        padding: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgb(0, 116, 211);
+        color: rgba(240, 240, 240);
+        width: 40%;
+        border: 1px solid black;
+        border-radius: 5px;
+        flex: 0.3
+    }
+
+    .group #camBTN span {
+        font-size: 26px;
+    }
+
+    @media only screen and (min-width: 600px) {
+        #output .swiper-bar {
+            width: 95%;
+            margin: auto;
+            overflow-x: unset;
+            flex-wrap: wrap;
+            justify-content: center;
         }
-        #title {
-                width: 100%;
-                height: 60px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 32px;
-                padding: 40px 0;
-        }
-        .input-box {
-                width: 90%;
-                height: 40px;
-                font-size: 20px;
-                display: block;
-                margin: auto;
-                margin-bottom: 10px;
-                position: relative;
-        }
-        .input-box input {
-                width: 100%;
-                height: 40px;
-                font-size: 20px;
-                padding: 5px;
-        }
-        .input-box .closeBTN {
-                width: 40px;
-                height: 30px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                position: absolute;
-                top: 11%;
-                right: 2%;
-                border-radius: 50px;
-                background: rgb(220,220,220);
-                color: rgba(40,40,40,0.6);
-                font-weight: 900;
-                font-size: 14px;
-                border: 1px solid;
-        }
-        #button {
-                margin: auto;
-                display: block;
-                width: 90%;
-                height: 40px;
-                font-size: 16px;
-        }
-        #output {
-                width: 90%;
-                padding: 10px;
-                font-size: 28px;
-                margin: auto;
-        }
-        #output .location-bar {
-                width: 100%;
-                justify-content: center;
-                align-items: center;
-                display: none;
-                padding: 10px;
-                margin: 10px auto;
-        }
-        #output .img-bar {
-                width: 250px;
-                height: 250px;
-                margin: auto;
-                display: none;
-        }
-        #output .img-bar img{
-                width: 100%;
-                height: 100%;
-                margin: auto;
-        }
+
         #output .inventory-bar {
-                width: 100%;
-                flex-direction: column;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 20px;
-                display: none;
+            width: unset;
+            flex: unset;
+            flex-basis: 14%;
+            margin: 10px;
         }
-        #output .inventory-bar .wrap {
-                width: 100%;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
+
+        #output .inventory-bar .model {
+            font-size: 24px;
         }
-        #output .inventory-bar > div {
-                display: flex;
-                align-items: center;
-                border: 1px solid;
-                padding: 10px;
-                font-size: 22px;
+
+        .activate {
+            background: rgba(240, 80, 65, 0.5);
         }
-        #output .inventory-bar #model {
-                border: none;
-                font-size: 40px;
-                letter-spacing: 1px;
-                padding: 5px;
+
+        .group {
+            display: none;
         }
-        #output .inventory-bar #name {
-                border: none;
-                display: flex;
-                justify-content: center;
-                text-align: center;
-                font-size: 22px;
-                padding: 5px;
-                text-transform: uppercase;
+
+        .input-box .closeBTN {
+            right: 5%;
         }
-        #output .inventory-bar #price {
-                border: none;
-                display: flex;
-                justify-content: center;
-                text-align: center;
-                font-size: 22px;
-                margin-bottom: 20px;
-                padding: 5px;
-        }
+    }
 </style>
+
 <body>
-        <div id="title">商品型號查詢系統</div>
+    <div id="title">商品型號查詢系統</div>
 
-        <div class="input-box">
-                <input id="input" type="text">
-                <button class="closeBTN" onclick="closeBTN()">X</button>
-        </div>        
-        
-        <button id="button" onclick="getResponse()">GO</button>
+    <div class="input-box">
+        <input id="input" type="text">
+        <button class="closeBTN" onclick="closeBTN()">X</button>
+        <button class='btn' id="goBTN" onclick="getResponse()">GO</button>
+    </div>
 
-        <div id="output">
-                <div class="location-bar">
-                        <div>總部儲位 : &nbsp &nbsp </div>
-                        <div id="location"></div>
-                </div>
-                <div class="img-bar"><img loading="lazy"></div>
-                <div class="inventory-bar">
-                        <div id=model></div>
-                        <div id=name></div>
-                        <div id=price></div>
-                </div>
-                <div id="null-bar"></div>
+    <div class="group">
+        <div class="selection">
+            <label for="device">設備</label>
+            <select id="select" name="select"></select>
         </div>
+        <button class='btn' id="camBTN" onclick="getCamera()">
+            <span class="material-symbols-outlined">photo_camera</span>
+        </button>
+    </div>
+
+    <div class="video-bar">
+        <video id="cam" autoplay playsinline></video>
+    </div>
+
+
+    <div id="output">
+        <div class="location-bar">
+            <div>總部儲位 : &nbsp &nbsp </div>
+            <div id="location"></div>
+        </div>
+        <div class="img-bar"><img loading="lazy"></div>
+        <div class="swiper-bar"></div>
+        <div id="null-bar"></div>
+    </div>
 </body>
+
 <script>
 
-        const input = document.getElementById("input")
-        const output = document.getElementById("output")
-        const nullBar = document.getElementById('null-bar')
-        const imgBar = document.querySelector('.img-bar')
-        const locationBar = document.querySelector('.location-bar')
-        const inventoryBar = document.querySelector('.inventory-bar')
+    const input = document.getElementById("input")
+    const output = document.getElementById("output")
+    const nullBar = document.getElementById('null-bar')
+    const imgBar = document.querySelector('.img-bar')
+    const locationBar = document.querySelector('.location-bar')
+    const swiperBar = document.querySelector('.swiper-bar')
+    const videoBar = document.querySelector('.video-bar')
+    const cam = document.getElementById('cam')
+    const scanRng = document.querySelector('.scan-rng')
+    const reader = document.getElementById('reader')
+    const select = document.getElementById('select')
+    let isQuagga = null
 
-        // 10碼直接查詢
-        input.addEventListener('input', (e) => {
-                e.target.value.length === 10 && getResponse()
-        })
 
-        // 清除上次結果
-        input.addEventListener('input', (e) => {
-                inventoryBar.style.display = 'none'
-                locationBar.style.display = 'none'
-                imgBar.style.display = 'none'
-                imgBar.childNodes[0].src = ''
+    // 初始化vconsole
+    // window.vConsole = new window.VConsole()
+
+    // 10碼直接查詢
+    input.addEventListener('input', (e) => {
+        e.target.value.length == 10 && getResponse()
+    })
+
+    // 清除上次結果
+    input.addEventListener('input', () => remove())
+
+    // 設置清除按鈕事件
+    function closeBTN() {
+        input.value = ""
+        input.focus()
+        remove()
+    }
+
+    // 定義請求函數
+    function getResponse() {
+        let goodModel = input.value.toUpperCase()
+        input.value = goodModel
+        console.log(goodModel)
+
+        fetch(`https://find.babyview.com.tw:44443/api?model=${goodModel}`)
+            .then(res => res.json())
+            .then(res => {
+                console.log(res)
+                if (!res.locationResult[0] || !res.inventoryResult[0]) {
+                    nullBar.innerHTML = '查無此商品'
+                    input.blur()
+                    return
+                }
+                if (res.locationResult) {
+                    locationBar.style.display = 'flex'
+                    document.getElementById('location').innerHTML = res.locationResult[0].location
+                    imgBar.style.display = 'block'
+                    imgBar.childNodes[0].src = `https://image.babyview.com.tw/data/${res.locationResult[0].model}.jpg`
+                }
+                if (res.inventoryResult) {
+                    swiperBar.style.display = 'flex'
+
+                    res.inventoryResult.forEach(item => {
+                        const inventoryBar = document.createElement('div')
+                        inventoryBar.className = 'inventory-bar'
+                        item[0].value === goodModel && inventoryBar.classList.add('activate')
+
+                        const model = document.createElement('div')
+                        model.className = 'model'
+                        model.innerHTML = item[0].value
+
+                        const name = document.createElement('div')
+                        name.className = 'name'
+                        name.innerHTML = item[1].value
+
+                        const price = document.createElement('div')
+                        price.className = 'price'
+                        price.innerHTML = item[2].value
+
+                        swiperBar.appendChild(inventoryBar)
+                        inventoryBar.appendChild(model)
+                        inventoryBar.appendChild(name)
+                        inventoryBar.appendChild(price)
+
+                        for (let i = 3; i < item.length; i++) {
+                            const parent = document.createElement('div')
+                            parent.innerHTML = item[i].title
+                            parent.className = 'wrap'
+
+                            const child = document.createElement('div')
+                            child.innerHTML = item[i].value
+
+                            parent.appendChild(child)
+                            inventoryBar.appendChild(parent)
+                        }
+                    })
+                }
                 nullBar.innerHTML = ''
-                remove()
-        })
+                input.blur()
 
-        // 設置清除按鈕事件
-        function closeBTN() {
-                input.value = ""
-		input.focus()
-                inventoryBar.style.display = 'none'
-                locationBar.style.display = 'none'
-                imgBar.style.display = 'none'
-                imgBar.childNodes[0].src = ''
-                nullBar.innerHTML = ''
-                remove()
+                const screenWidth = window.innerWidth
+                const targetView = document.querySelector('.activate').offsetLeft - screenWidth * 0.1 - 10
+                swiperBar.scrollTo(targetView, 0)
+            })
+    }
+
+    // 定義清除函數
+    const remove = () => {
+        swiperBar.style.display = 'none'
+        swiperBar.innerHTML = ''
+        locationBar.style.display = 'none'
+        imgBar.style.display = 'none'
+        imgBar.childNodes[0].src = ''
+        nullBar.innerHTML = ''
+    }
+
+    // 定義getCamera 
+    const getCamera = () => {
+
+        if (isQuagga) return
+        input.value = ""
+        remove()
+        
+        const selectedCameraId = localStorage.getItem("selected-camera")
+        const constraints = {
+            video: selectedCameraId ? { deviceId: { exact: selectedCameraId } } : { facingMode: "environment" }
         }
 
-        // 定義請求函數
-        function getResponse() {
-                let goodModel = input.value.toUpperCase()
-                input.value = goodModel
-                console.log(goodModel)
+        // 取得影像
+        navigator.mediaDevices.getUserMedia(constraints)
+            .then(stream => {
+                
+                // 列出可用鏡頭
+                const track = stream.getVideoTracks()[0]
+                const videoTracks = stream.getVideoTracks()[0]
+                const videoId = videoTracks.getSettings().deviceId
 
-                fetch(`http://localhost:3000/api?model=${goodModel}`)
-                .then(res => res.json())
-                .then(res => {
-                        console.log(res)
-                        if (!res.locationResult[0] || !res.inventoryResult[0]) {
-                                nullBar.innerHTML = '查無此商品'
-                                input.blur()
-                                return
-                        }
-                        if (res.locationResult) {
-                                locationBar.style.display = 'flex'
-                                for (key in res.locationResult[0]) {
-                                        document.getElementById(key).innerHTML = res.locationResult[0][key]
+                if (!select.length) {
+                    navigator.mediaDevices.enumerateDevices()
+                        .then((devices) => devices.forEach((device) => {
+
+                            if (device.kind == 'videoinput') {
+                                const option = document.createElement('option')
+                                option.value = device.deviceId
+                                option.innerHTML = device.label
+
+                                if (videoId == device.deviceId) {
+                                    option.selected = true
                                 }
-                                imgBar.style.display = 'block'
-                                imgBar.childNodes[0].src = `https://image.babyview.com.tw/data/${res.locationResult[0].model}.jpg`
-                        }
-                        if (res.inventoryResult) {
-                                inventoryBar.style.display = 'flex'
-                                for (let i = 3; i < res.inventoryResult[0].length; i++) {
-                                        document.getElementById('model').innerHTML = res.inventoryResult[0][0].value
-                                        document.getElementById('name').innerHTML = res.inventoryResult[0][1].value
-                                        document.getElementById('price').innerHTML = res.inventoryResult[0][2].value
 
-                                        const parent = document.createElement('div')
-                                        parent.innerHTML = res.inventoryResult[0][i].title
-                                        parent.className = 'wrap'
+                                select.appendChild(option)
+                            }
+                        }))
+                }
 
-                                        const child = document.createElement('div')
-                                        child.innerHTML = res.inventoryResult[0][i].value
+                // 開啟videoBar
+                videoBar.style.display = 'block'
+                cam.srcObject = stream
+                cam.play()
 
-                                        parent.appendChild(child)
-                                        inventoryBar.appendChild(parent)
-                                }
-                        }
-                        nullBar.innerHTML = ''
-                        input.blur()
+                // 初始化QuaggaJS
+                Quagga.init({
+                    inputStream: {
+                        name: "Live",
+                        type: "LiveStream",
+                        target: cam,
+                        constraints: {
+                            deviceId: videoId
+                        },
+                    },
+                    decoder: {
+                        readers: [
+                            'code_128_reader'
+                        ]
+                    },
+                    config: {
+                        numOfWorkers: navigator.hardwareConcurrency,
+                        supplements: ['code_128']
+                    }
+                }, (err) => {
+                    err && console.log(err)
+                    console.log("Quagga start")
+                    Quagga.start()
+                    isQuagga = true
                 })
-        }
 
-        // 定義清除函數
-        function remove () {
-                const wraps = document.querySelectorAll('.wrap')
-                wraps.forEach(item => inventoryBar.removeChild(item))
-        }
+                // 切換影像源
+                select.onchange = (e) => {
+                    const selectedValue = e.target.options[e.target.selectedIndex].value
+                    localStorage.setItem("selected-camera", selectedValue);
+                    console.log('deviceId ', selectedValue)
+
+                    Quagga.stop()
+                    stream.getTracks()[0].stop()
+                    videoBar.style.display = 'none'
+                    navigator.mediaDevices.getUserMedia({ video: { deviceId: selectedValue } })
+                        .then(stream => {
+                            videoBar.style.display = 'block'
+                            cam.srcObject = stream
+                            cam.play()
+
+                            Quagga.init({
+                                inputStream: {
+                                    name: "Live",
+                                    type: "LiveStream",
+                                    target: cam,
+                                    constraints: {
+                                        facingMode: null,
+                                        deviceId: selectedValue
+                                    },
+                                },
+                                decoder: {
+                                    readers: [
+                                        'code_128_reader'
+                                    ]
+                                },
+                                config: {
+                                    numOfWorkers: navigator.hardwareConcurrency,
+                                    supplements: ['code_128']
+                                }
+                            }, (err) => {
+                                err && console.log(err)
+                                console.log("Quagga start again")
+                                Quagga.start()
+                            })
+                        })
+                }
+
+                // 監聽檢測函數
+                Quagga.onDetected((data) => {
+                    console.log(data)
+                    input.value = data.codeResult.code
+                    if (input.value.length == 10) {
+                        getResponse()
+                        Quagga.stop()
+                        Quagga.offDetected()
+                        stream.getTracks()[0].stop()
+                        videoBar.style.display = 'none'
+                        isQuagga = false
+                    }
+                })
+            })
+    }
 
 </script>
+
 </html>

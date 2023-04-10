@@ -1,3 +1,4 @@
+const https = require('https')
 const http = require('http')
 const url = require('url')
 const fs = require('fs')
@@ -127,7 +128,9 @@ const server = http.createServer((req, res) => {
     const pathName = requestUrl.pathname
     const model = requestUrl.query.model
 
-    console.log(pathName, model)
+    const day = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' })
+    const time = new Date().toLocaleTimeString('zh-TW', { hour12: false })
+    console.log(pathName, model, day, time)
     if (pathName === '/api') {
         
         res.writeHead(200, {
@@ -141,7 +144,7 @@ const server = http.createServer((req, res) => {
         }
         else {
             const locationResult = locationArr.filter((item) => item.model === model.substring(0, 7))
-            const inventoryResult = inventoryArr.filter((item) => item[0].value == model)
+            const inventoryResult = inventoryArr.filter((item) => item[0].value.includes(model.substring(0, 7)))
             res.end(JSON.stringify({ locationResult, inventoryResult }))
         }
         
